@@ -243,7 +243,7 @@ namespace LesGraphingCalc
                 if (severity >= Severity.Error) {
                     var msg = fieldName + ": " + fmt.Localized(args);
                     if (ctx is SourceRange)
-                        msg += $"\r\n{text}\r\n{new string('-', ((SourceRange)ctx).StartIndex)}^";
+                        msg += $"\r\n{text}\r\n{new string('-', ((SourceRange)ctx).Start.PosInLine-1)}^";
                     throw new LogException(severity, ctx, msg);
                 }
             });
