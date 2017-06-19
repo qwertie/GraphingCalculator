@@ -220,8 +220,8 @@ namespace LesGraphingCalc
                 case !$a: return  Eval(a, lookup) == 0 ? (number)1 : (number)0;
                 case ~$a: return (number)~(long)Eval(a, lookup);
                 // In LES, the conditional operator a?b:c is actually two separate binary 
-                // operators named '? and ': ... you can also write "a if b else c" but it 
-                // is parsed as "a if (b else c)".
+                // operators named '? and ': ... so if we use C# syntax $c ? $a : $b here,
+                // it will NOT work. Note: @`'?` represents the identifier called '? in EC#
                 case @`'?`($c, @`':`($a, $b)):
                     return Eval(c, lookup) != (number)0 ? Eval(a, lookup) : Eval(b, lookup);
                 case square($a):  return Eval(a, lookup)::n * n;

@@ -15,18 +15,18 @@ namespace LesGraphingCalc
     // Holds output data and output bitmap, and performs rendering
     class OutputState
     {
-	    public List<CalculatorCore> Calcs;
-	    public GraphRange XRange, YRange, ZRange;
-	    public DirectBitmap Bitmap;
+        public List<CalculatorCore> Calcs;
+        public GraphRange XRange, YRange, ZRange;
+        public DirectBitmap Bitmap;
         
-	    public OutputState(List<CalculatorCore> calcs, GraphRange xRange, GraphRange yRange, GraphRange zRange, DirectBitmap bitmap)
+        public OutputState(List<CalculatorCore> calcs, GraphRange xRange, GraphRange yRange, GraphRange zRange, DirectBitmap bitmap)
         {
-	        Calcs = calcs;
-	        XRange = xRange;
-	        YRange = yRange;
-	        ZRange = zRange;
-	        Bitmap = bitmap;
-	    }
+            Calcs = calcs;
+            XRange = xRange;
+            YRange = yRange;
+            ZRange = zRange;
+            Bitmap = bitmap;
+        }
 
         internal void RenderAll()
         {
@@ -280,6 +280,8 @@ namespace LesGraphingCalc
             double dif = hi - lo;
             if (dif <= 0)
                 return 1; // avoid unexpected results from negative range
+
+            // Start with an interval that is too large, and reduce it until we have enough lines.
             double interval = Math.Pow(10, Math.Ceiling(Math.Log10(dif)));
             int third = 0;
             for (double roughLinesNow = 1; roughLinesNow < roughLines; third = (third + 1) % 3) {

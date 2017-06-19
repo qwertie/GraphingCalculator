@@ -3,7 +3,7 @@ C# Graphing Calculator based on LES
 
 ![Screenshot](Screenshots/Basic.png)
 
-I made a powerful calculator in three days based on the LES language. LES is meant to be a "universal" expression language, so it's useful for a variety of different projects that need to parse "expressions", such as a graphing calculator. Since the parser comes from the Loyc.Syntax library, I didn't have to make an expression parser for the calculator itself.
+I made a nice calculator in three days based on the LES language. LES is meant to be a "universal" expression language, so it's useful for a variety of different projects that need to parse "expressions", such as a graphing calculator. Since the parser comes from the Loyc.Syntax library, I didn't have to make an expression parser for the calculator itself.
 
 Instead I was able to focus on making the best darn calculator I could in as few lines of code as I could. In addition, the computational part reduces the lines of code further using Enhanced C#. However, most of the program is written in plain C#.
 
@@ -11,6 +11,8 @@ What is LES?
 ------------
 
 If you're not a programmer, skip this section.
+
+First I'll tell you what LES is not. It is not a programming language. And it wasn't designed for graphing calculators, either. It is only a syntax: the _meaning_ of LES code is defined entirely by a host application or host programming language.
 
 LES is designed to be a "universal" expression language based on the C programming language. LES has all the same operators as C with roughly the same precedence, except that certain operators are not allowed to be mixed; for example `x & 7 == 0` causes an error because in C this means `x & (7 == 0)` instead of what you expect, `(x & 7) == 0`. For the same reason, you can't write `x << 1 + 1` (a programmer naturally expects the shift operators to have similar precedence to multiplication, but they don't).
 
@@ -20,7 +22,9 @@ C syntax is okay for a graphing calculator, but not ideal. Most importantly you 
 
 Another issue is that LES has an unlimited number of operators, but the precedence of each one is fixed based on the text of the operator. For example you could write `x *+ y`, and `*+` would be a new operator with the same precedence as `*`. In the graphing calculator this is a nuisance, because when you write `x*-sin(x)`, `*-` is seen as one operator, not two. The calculator solves this problem by inserting spaces where appropriate (`Regex.Replace(text, @"([-+*/%^&*|<>=?.])([-~!+])", "$1 $2")`).
 
-LES parses into [Loyc trees](http://loyc.net/loyc-trees), a universal representation for syntax trees. The [Enhanced C#](http://ecsharp.net) language uses the same representation, by the way.
+One nice thing about LES is that it supports attributes (which are like Java annotations or C# attributes). You can use attributes to configure the appearance of the output.
+
+LES parses into [Loyc trees](http://loyc.net/loyc-trees), a universal representation for syntax trees. This happens to be the same representation used by the [Enhanced C#](http://ecsharp.net) programming language.
 
 Key features
 ------------
@@ -37,11 +41,11 @@ Key features
 
 ![Screenshot](Screenshots/TieFighter.png)
 
-**Pseudo-3D**: Although there's no 3D renderer, you can make "heat maps" with contour lines instead:
+**Pseudo-3D**: Although there's no 3D renderer, you can make "heat maps" with contour lines instead. Contour lines are drawn along routes where the output stays constant:
 
 ![Screenshot](Screenshots/ContourLines.png)
 
-**Single result**: If you just want to do a single calculation, there's no need to mention `x` or `y`. You can also do multiple calculations separated by semicolons, e.g. `2+2; 3*3; 4^4`. Just make sure you take the mouse off the graph so that it doesn't interfere with the result.
+**Single result**: If you just want to do a single calculation, there's no need to mention `x` or `y`. You can also do multiple calculations separated by semicolons, e.g. `2+2; 3*3; 4^4`.
 
 ![Screenshot](Screenshots/ImmediateMode.png)
 
@@ -277,7 +281,7 @@ Other features
 31. You can compute an equality in two variables numerically with the `==` operator, e.g. `x^2+y^2 == 5^2` is a circle of radius 5. **Note:** in this mode the line thickness is always one pixel. That's because the calculator actually _doesn't_ draw a line. How it actually works is that if you write `x^2+y^2 == 5^2`, the calculator computes `x^2+y^2 - 5^2` for every pixel and then sets all the pixels where `Math.Sign(z)` is different in adjacent pixels (where `z` is the result). You can also solve a single-variable equation like `x==4/x`, but it will be graphed as though there were two variables.
 32. Supports boolean functions or inequalities in two variables. For example, the following expression looks like a Tie Fighter: `x^2+y^2 < 4 || (+y < 0.5 && +x < 4) || (+y < 5 && +x in (4,5))`
 33. Produces pseudo-3D "heat maps" when you write an expression with two variables. Here's a cool example: `cos(x)+cos(y)^3+sqrt(+(x*y))`.
-34. On a heat map, contour lines are drawn along routes where the output stays constant. To disable this feature, write `@transparent` before the formula (you can also write a color name, like `@black`)
+34. Contour lines on the heat map. To disable this feature, write `@transparent` before the formula (you can also write a color name, like `@black`)
 35. Normally the range of the heat map is auto-detected, and the 8 bands of color have no constant meaning (e.g. green may mean 6 when viewing one part of the graph, but if you pan around, it could mean something else). However, you can "lock in" to a specific range by adding a third range (called the "z" range) to the ranges list. For example, if you write `-10..10; -8..8; -4..4` in the Ranges box, then the colors and contour lines will represent **only** the range -4 to 4, and the colors will have a fixed meaning: Orange=-4, Red=-3, Magenta=-2, Royal Blue=-1, White=0, Yellow=1, Green=2, Pure Blue=3, Black=4.
 36. You can set the color of a series by writing `@colorname` before the formula. For example, `@red x^2` shows a red parabola.
 37. You can set the line thickness of a series to 5 pixels by writing `@5` before the formula, e.g. `@5 x^2`.
