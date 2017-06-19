@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -63,9 +64,8 @@ namespace LesGraphingCalc
                                                 + "(x**2+y**2-1)**3 == x**2*y**3 // Heart\n"
                                                 + "@purple rnd()*abs(x*y)<0.25  // Noisy star\n"
                                                 + "x^2+y^2 < 4 || (+y < 0.5 && +x < 4) || (+y < 5 && +x in (4,5))  // Tie fighter\n"
-                                                + "4 % x\n"
-                                                + "\n");
-            SetUpComboBox(cbVariables, "Variables", $"x=1\n"
+                                                + "4 % x\n" + "\n");
+            SetUpComboBox(cbVariables, "Variables", "x=1\n"
                                                   + "x=1; r=sqrt(x**2+y**2); theta=mod(atan(y,x),tau)");
             SetUpComboBox(cbRanges, "Ranges", "-10..10;\n"
                                              +"-5..5; \n"
@@ -159,7 +159,8 @@ namespace LesGraphingCalc
             try {
                 // Parse the three combo boxes and build a dictionary of variables
                 var exprs = ParseExprs("Formula", cbFormulas.Text);
-                var variables = ParseExprs("Variables", $"pi={Math.PI};tau={Math.PI*2};e={Math.E};phi=1.6180339887498948; {cbVariables.Text}");
+                var variables = ParseExprs("Variables", string.Format(CultureInfo.InvariantCulture, 
+					"pi={0};tau={1};e={2};phi=1.6180339887498948; {3}", Math.PI, Math.PI*2, Math.E, cbVariables.Text));
                 var ranges = ParseExprs("Range", cbRanges.Text);
                 var varDict = CalculatorCore.ParseVarList(variables);
 
@@ -313,7 +314,7 @@ namespace LesGraphingCalc
         void SetRanges(CalcRange xRange, CalcRange yRange, string zRangeText)
         {
             // Refreshes display as side effect
-            var newRanges = string.Format("{0:G8}..{1:G8}; {2:G8}..{3:G8}; {4}", 
+            var newRanges = string.Format(CultureInfo.InvariantCulture, "{0:G8}..{1:G8}; {2:G8}..{3:G8}; {4}", 
                             xRange.Lo, xRange.Hi, yRange.Lo, yRange.Hi, zRangeText);
             Trace.WriteLine(newRanges);
             cbRanges.Text = newRanges;
