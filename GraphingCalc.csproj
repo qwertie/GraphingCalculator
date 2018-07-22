@@ -25,8 +25,9 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>5</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>8</ApplicationRevision>
+    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -53,7 +54,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>112DCF705FF2DFE9A511B132CD2B9C64D86B4E0B</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>4472FAE5DBF3A577FE67F9F513BCA966B02CCEA3</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>GraphingCalc_TemporaryKey.pfx</ManifestKeyFile>
@@ -62,23 +63,20 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Properties\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Loyc.Collections, Version=2.4.3.0, Culture=neutral, PublicKeyToken=b1460dff8a28f7a7, processorArchitecture=MSIL">
-      <HintPath>packages\Loyc.Collections.24.3.0\lib\net45\Loyc.Collections.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Loyc.Collections, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b1460dff8a28f7a7, processorArchitecture=MSIL">
+      <HintPath>packages\Loyc.Collections.26.2.0\lib\net45\Loyc.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="Loyc.Essentials, Version=2.4.3.0, Culture=neutral, PublicKeyToken=b1460dff8a28f7a7, processorArchitecture=MSIL">
-      <HintPath>packages\Loyc.Essentials.24.3.0\lib\net45\Loyc.Essentials.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Loyc.Essentials, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b1460dff8a28f7a7, processorArchitecture=MSIL">
+      <HintPath>packages\Loyc.Essentials.26.2.0\lib\net45\Loyc.Essentials.dll</HintPath>
     </Reference>
-    <Reference Include="Loyc.Syntax, Version=2.4.3.0, Culture=neutral, PublicKeyToken=b1460dff8a28f7a7, processorArchitecture=MSIL">
-      <HintPath>packages\Loyc.Syntax.24.3.0\lib\net45\Loyc.Syntax.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Loyc.Syntax, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b1460dff8a28f7a7, processorArchitecture=MSIL">
+      <HintPath>packages\Loyc.Syntax.26.2.0\lib\net45\Loyc.Syntax.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

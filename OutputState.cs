@@ -390,7 +390,7 @@ namespace LesGraphingCalc
             AutoRange = lo >= hi;
         }
 
-        public static GraphRange New(string rangeName, LNode range, int numPixels)
+        public static GraphRange New(string rangeName, LNode range, int numPixels, Dictionary<Symbol,LNode> varDict)
         {
             if (range == null)
                 return new GraphRange(-1, 1, numPixels, Pens.MidnightBlue, null) { AutoRange = true };
@@ -399,7 +399,8 @@ namespace LesGraphingCalc
             
             if (range.Calls(CodeSymbols.Sub, 2) || range.Calls(CodeSymbols.DotDot, 2))
             {
-                double lo = Convert.ToDouble(range[0].Value), hi = Convert.ToDouble(range[1].Value);
+                double lo = CalculatorCore.Eval(range[0], varDict);
+                double hi = CalculatorCore.Eval(range[1], varDict);
                 Pen pen = OutputState.MakePen(range);
                 string label = range.Attrs.Select(a => a.Value as string).FirstOrDefault(s => s != null);
 

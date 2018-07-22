@@ -45,7 +45,7 @@ namespace LesGraphingCalc
                         using (_prevBitmap)
                             _prevBitmap = _outState.Bitmap;
                     }
-                    picPanel.Image = _prevBitmap.Bitmap;
+                    graphPanel.Image = _prevBitmap.Bitmap;
                 }
                 if (_refreshRequested) {
                     _refreshRequested = false;
@@ -107,7 +107,7 @@ namespace LesGraphingCalc
                 // Another ComboBox bug/oddity: when AddHistory removes old temp item, 
                 // Text temporarily becomes "". Fix by calling AddHistory after refresh
                 AddHistory(comboBox, comboBox.Text, false);
-                lblMouseOver.Visible = false; // doesn't work due to spurious MouseMove messages
+                lblMouseOver.Visible = false; // Mouseover info out of date; hide it until mouse moves
             };
             // Mouse wheel events stupidly go to the control with focus
             comboBox.MouseWheel += (s, e) => {
@@ -165,11 +165,11 @@ namespace LesGraphingCalc
                 var varDict = CalculatorCore.ParseVarList(variables);
 
                 // Get display range.
-                Size size = picPanel.ClientSize;
+                Size size = graphPanel.ClientSize;
                 LNode xRangeExpr = ranges.TryGet(0, null), yRangeExpr = ranges.TryGet(1, null);
-                var xRange = GraphRange.New("x", xRangeExpr, size.Width);
-                var yRange = GraphRange.New("y", yRangeExpr ?? xRangeExpr, size.Height);
-                var zRange = GraphRange.New("z", ranges.TryGet(2, null), 0);
+                var xRange = GraphRange.New("x", xRangeExpr, size.Width, varDict);
+                var yRange = GraphRange.New("y", yRangeExpr ?? xRangeExpr, size.Height, varDict);
+                var zRange = GraphRange.New("z", ranges.TryGet(2, null), 0, varDict);
                 yRange.AutoRange = (yRangeExpr == null); // For functions of x only; ignored if y is used
 
                 var calcs = exprs.Select(e => CalculatorCore.New(e, varDict, xRange, yRange)).ToList();
@@ -207,7 +207,7 @@ namespace LesGraphingCalc
                     return;
                 }
 
-                os.Bitmap = new DirectBitmap(picPanel.ClientSize);
+                os.Bitmap = new DirectBitmap(graphPanel.ClientSize);
 
                 _bw.RunWorkerAsync(os);
             }
@@ -264,7 +264,7 @@ namespace LesGraphingCalc
         private void picPanel_MouseDown(object sender, MouseEventArgs e)
         {
             if (_outState != null) {
-                _dragging = picPanel.Capture = (e.Button == MouseButtons.Left);
+                _dragging = graphPanel.Capture = (e.Button == MouseButtons.Left);
                 _dragStartPoint = e.Location;
                 _originalRanges = cbRanges.Text;
                 _originalXRange = _outState.XRange;
@@ -286,7 +286,7 @@ namespace LesGraphingCalc
         }
         private void picPanel_MouseUp(object sender, MouseEventArgs e)
         {
-            _dragging = picPanel.Capture = false;
+            _dragging = graphPanel.Capture = false;
         }
         private void picPanel_MouseLeave(object sender, EventArgs e)
         {
@@ -307,8 +307,8 @@ namespace LesGraphingCalc
         }
         private void btnCopy_Click(object sender, EventArgs e)
         {
-            if (picPanel.Image != null)
-                Clipboard.SetImage(picPanel.Image);
+            if (graphPanel.Image != null)
+                Clipboard.SetImage(graphPanel.Image);
         }
 
         void SetRanges(CalcRange xRange, CalcRange yRange, string zRangeText)
