@@ -207,7 +207,11 @@ namespace LesGraphingCalc
                     return;
                 }
 
-                os.Bitmap = new DirectBitmap(graphPanel.ClientSize);
+                Size graphSize = graphPanel.ClientSize;
+                if (graphSize.Width <= 0 || graphSize.Height <= 0)
+                    return;
+
+                os.Bitmap = new DirectBitmap(graphSize);
 
                 _bw.RunWorkerAsync(os);
             }
@@ -244,7 +248,7 @@ namespace LesGraphingCalc
                 if (severity >= Severity.Error) {
                     var msg = fieldName + ": " + fmt.Localized(args);
                     if (ctx is SourceRange)
-                        msg += $"\r\n{text}\r\n{new string('-', ((SourceRange)ctx).Start.PosInLine-1)}^";
+                        msg += $"\r\n{text}\r\n{new string('-', ((SourceRange)ctx).Start.Column-1)}^";
                     throw new LogException(severity, ctx, msg);
                 }
             });
